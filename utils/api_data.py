@@ -13,8 +13,8 @@ information = mydb["api_information"]
 
 def guild_already_setup(server_id : int) -> bool:
     search_critera = {"server_id": server_id}
-    results = information.find(search_critera)
-    if results.count() > 0:
+    results = information.count_documents(search_critera)
+    if results > 0:
         return True
     else:
         return False

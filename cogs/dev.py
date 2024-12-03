@@ -7,9 +7,9 @@ config = dotenv_values(".env")
 devs = config["DEVS"]
 
 def dev_check(interaction : discord.Interaction):
-    return interaction.user.id in devs
+    return str(interaction.user.id) in devs
 
-class maincmds(commands.Cog):
+class dev(commands.Cog):
     def __init__(self, client):
         self.client = client
 
@@ -23,3 +23,6 @@ class maincmds(commands.Cog):
         await interaction.response.defer()
         fmt = await self.client.tree.sync()
         await interaction.followup.send(f"Synced {len(fmt)} commands.")
+
+async def setup(client):
+    await client.add_cog(dev(client))

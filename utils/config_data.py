@@ -8,22 +8,31 @@ client = pymongo.MongoClient(str(connection_str))
 mydb = client["RankBot_Data"]
 server_config = mydb["server_config"]
 
+def guild_already_setup(server_id : int) -> bool:
+    search_critera = {"server_id": server_id}
+    results = server_config.count_documents(search_critera)
+    print(results)
+    if results > 0:
+        return True
+    else:
+        return False
+
 def create_configs(server_id : int, data : dict):
-    logging_channel = data["logging_channel"]
+    logging_channel = data["logging_channel_id"]
     required_roles = data["required_roles"]
-    
-    data = {
+
+    new_data = {
         "serverid": server_id,
         "configs": {
             "logging_channel": logging_channel,
-            "required_roles": required_roles
+            "required_roles": required_roles,
         }
     }
-    server_config.insert_one(data)
 
+    server_config.insert_one(new_data)
 def update_configs(server_id : int, newData : dict):
     search_critera = {"server_id": server_id}
-    logging_channel = newData["logging_channel"]
+    logging_channel = newData["logging_channel_id"]
     required_roles = newData["required_roles"]
     new_values = {
         "serverid": server_id,
