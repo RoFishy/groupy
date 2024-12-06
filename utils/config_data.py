@@ -9,9 +9,8 @@ mydb = client["RankBot_Data"]
 server_config = mydb["server_config"]
 
 def guild_already_setup(server_id : int) -> bool:
-    search_critera = {"server_id": server_id}
+    search_critera = {"serverid": server_id}
     results = server_config.count_documents(search_critera)
-    print(results)
     if results > 0:
         return True
     else:
@@ -31,20 +30,23 @@ def create_configs(server_id : int, data : dict):
 
     server_config.insert_one(new_data)
 def update_configs(server_id : int, newData : dict):
-    search_critera = {"server_id": server_id}
+    search_critera = {"serverid": server_id}
     logging_channel = newData["logging_channel_id"]
     required_roles = newData["required_roles"]
     new_values = {
+        "$set": {
         "serverid": server_id,
-        "configs": {
-            "logging_channel": logging_channel,
-            "required_roles": required_roles
+            "configs": {
+                "logging_channel": logging_channel,
+                "required_roles": required_roles
+            }
         }
+
     }
     server_config.update_one(search_critera, new_values)
 
 def fetch_configs(server_id : int) -> dict:
-    search_critera = {"server_id": server_id}
+    search_critera = {"serverid": server_id}
     results = server_config.find(search_critera)
     global configs
     for result in results:

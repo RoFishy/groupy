@@ -21,7 +21,10 @@ class dev(commands.Cog):
     @app_commands.check(dev_check)
     async def sync(self, interaction : discord.Interaction):
         await interaction.response.defer()
-        fmt = await self.client.tree.sync()
+        try:
+            fmt = await self.client.tree.sync()
+        except Exception as e:
+            print(e)
         await interaction.followup.send(f"Synced {len(fmt)} commands.")
 
 async def setup(client):
