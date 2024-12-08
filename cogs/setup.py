@@ -3,9 +3,9 @@ from discord.ext import commands
 from discord import app_commands
 from dotenv import dotenv_values
 from discord.utils import get
-from utils import config_data
-from utils import api_data
-from utils import group_data
+from utils.data import config_data
+from utils.data import api_data
+from utils.data import group_data
 
 config = dotenv_values(".env")
 
